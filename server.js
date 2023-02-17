@@ -34,7 +34,8 @@ const startMenu = async () => {
         "Add a Department",
         "Add a Role",
         "Add an Employee",
-        "Update an Employee's role"
+        "Update an Employee's role",
+        "Exit"
       ]
     })
     .then((result) => {
@@ -65,6 +66,10 @@ const startMenu = async () => {
 
         case "Update an Employee's role":
           updateEmployee();
+          break;
+
+        case 'Exit':
+          quit();
           break;
 
         default:
@@ -207,31 +212,3 @@ const quit = () => {
   db.end();
   process.exit();
 }
-
-// const updateRole = [
-//   {
-//     tpye: 'input',
-//     name: 'role_id',
-//     message: 'What new role would you like for your employee? Enter the number of the "id" of the desired new role'
-//   }
-// ]
-
-// const chooseEmployee = async () => {
-//   const result = await inquirer.prompt(chooseEmployee)
-
-//   db.query(`SELECT role.id role.title FROM role`, (err, results) => {
-//     console.log('Selected');
-//     console.table(results);
-//   });
-// }
-
-// const updateEmployee = async (employeeId) => {
-//   const result = await inquirer.prompt(updateRole)
-//   const sql = `UPDATE employee SET role_id = ${result.role_id} WHERE id = ${employeeId}`;
-
-//   db.query(sql, (err, results) => {
-//     console.log('Updated');
-//     console.table(results);
-//   });
-//   startMenu();
-// }
