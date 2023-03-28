@@ -114,15 +114,13 @@ const addDepartment = async () => {
       name: 'depName',
       message: 'What department would you like to add?'
     })
-    .then((result) => {
-      db.query('INSERT INTO department (name) Values (?)', [result.depName], (err, res) => {
+    .then(({depName}) => {
+      db.query('INSERT INTO department (name) Values (?)', [depName], (err, res) => {
         if (err) throw err;
         console.table(res);
-        startMenu();
       });
     });
-
-  startMenu();
+    startMenu();
 }
 
 const addRole = async () => {
@@ -144,17 +142,17 @@ const addRole = async () => {
         message: 'What department is the new role in? Enter only the number for the "id" of the department.'
       }
     ])
-    .then((result) => {
-      db.query('INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)', [result.title, result.salary, result.department], (err, res) => {
+    .then(({title, salary, department}) => {
+      db.query('INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)', [title, salary, department], (err, res) => {
         if (err) throw err;
         console.table(res);
       });
     });
-  startMenu();
+    startMenu();
 }
 
 const addEmployee = async () => {
-  const result = await inquirer
+ const result = await inquirer
     .prompt([
       {
         type: 'input',
@@ -177,13 +175,14 @@ const addEmployee = async () => {
         message: 'Who is the manager for the new employee? Enter the number of the "id" for the manager'
       }
     ])
-    .then((result) => {
-      db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [result.first_name, result.last_name, result.role_id, result.mnager_id], (err, res) => {
-        if (err) throw err;
+    .then(({first_name, last_name, role_id, manager_id}) => {
+
+      db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [first_name, last_name, role_id, manager_id], (err, res) => {
+        if (err) throw(err);
         console.table(res);
       });
     })
-  startMenu();
+    .then(startMenu) 
 }
 
 const updateEmployee = async (employeeId) => {
@@ -200,12 +199,12 @@ const updateEmployee = async (employeeId) => {
         message: 'What new role would you like for your employee? Enter the number of the "id" of the desired new role'
       }
     ])
-    .then((result) => {
-      db.query('UPDATE employee SET role_id = ? WHERE id = ?', [result.role_id, result.employee_id], (err, res) => {
+    .then(({role_id, employee_id}) => {
+      db.query('UPDATE employee SET role_id = ? WHERE id = ?', [role_id, employee_id], (err, res) => {
         console.table(res);
       });
     })
-  startMenu();
+    startMenu();
 }
 
 const quit = () => {
